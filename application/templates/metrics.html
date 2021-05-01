@@ -11,4 +11,14 @@
 <h1>Last File Uploaded</h1>
     <h3> {{ last_file }} </h3>
 <br><br>
+<h1>Meter Details</h1>
+<form action='' method='POST'>
+    {{ form.hidden_tag() }}
+    {{ form.meter_number.label }} {{ form.meter_number }} <br>
+    {{ form.submit }}
+</form>
+<br>
+{{ meter_details }}
+<br>
+<br><br>
 {% endblock body %}
