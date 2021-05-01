@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+<br><br>
+<form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.file }}
+    {{form.submit}}
+</form>
+
+{% endblock body %}
