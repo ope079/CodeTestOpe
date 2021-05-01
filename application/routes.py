@@ -1,5 +1,5 @@
 from application import app, db
-from application.forms import Form, Meter_Form
+from application.forms import Form
 from application.models import Headr, Consu
 from flask import render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -54,10 +54,9 @@ def home():
 
 @app.route('/metrics', methods=["POST", "GET"])
 def getMetrics():
-    form = Meter_Form()
     count_meters = Consu.query.group_by(Consu.meter_number).distinct().count()
     count_files = Headr.query.order_by(Headr.file_number).distinct().count()
     last_file = Headr.query.order_by(Headr.fileReception_time.desc()).first().file_number
-    meter_details = Consu.query.filter_by(meter_number=form.meter_number.data).all()
-    return render_template("metrics.html", count_meters=count_meters, count_files=count_files, last_file=last_file, meter_details=meter_details, form=form)
+    return render_template("metrics.html", count_meters=count_meters, count_files=count_files,
+                           last_file=last_file)
 
