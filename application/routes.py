@@ -45,7 +45,6 @@ def home():
                     new_consu = Consu(meter_number=meter_number, measurement_date_time=measurement_date_time,
                                       consumption=consumption, file_number=file_number)
                     db.session.add(new_consu)
-                    db.session.commit()
                     validate_meter_number_and_date_time(meter_number, measurement_date_time)
                     db.session.commit()
                 return redirect(url_for('home'))

@@ -6,8 +6,6 @@ from sqlalchemy import func
 
 def validate_meter_number_and_date_time(meter_number, measurement_date_time):
     if Consu.query.filter(and_(Consu.meter_number==meter_number, Consu.measurement_date_time==measurement_date_time)).count() > 1:
-        subq = db.session.query(Consu.measurement_date_time).filter(and_(Consu.meter_number==meter_number,
-                                                                         Consu.measurement_date_time==measurement_date_time,
-                                                                         )).subquery('measurement_date_time')
-        subq2 = db.session.query(Consu).filter(Consu.measurement_date_time.in_.subq).filter(Consu.measurement_date_time < func.max(Consu.measurement_date_time)).subquery()
-        Consu.query.filter(Consu.measurement_date_time.in_(subq2)).delete(synchronize_session=False)
+        subq = db.session.query(Consu.measurement_date_time).filter(and_(Consu.meter_number==meter_number, Consu.measurement_date_time==measurement_date_time)).order_by(Consu.measurement_date_time.desc()).limit(1).subquery()
+        Consu.query.filter(Consu.measurement_date_time.notin_(subq)).delete(synchronize_session=False)
+        db.session.execute("ALTER SEQUENCE Consu.id RESTART WITH 1")
