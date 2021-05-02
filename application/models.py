@@ -18,6 +18,6 @@ class Consu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     meter_number = db.Column(db.String(20))
     measurement_date_time = db.Column(db.DateTime)
-    consumption = db.Column(db.Integer)
+    consumption = db.Column(db.Float)
     file_number = db.Column(db.String(20))
 
