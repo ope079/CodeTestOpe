@@ -9,5 +9,5 @@ def validate_meter_number_and_date_time(meter_number, measurement_date_time):
         subq = db.session.query(Consu.measurement_date_time).filter(and_(Consu.meter_number==meter_number,
                                                                          Consu.measurement_date_time==measurement_date_time,
                                                                          )).subquery('measurement_date_time')
-        subq2 = db.session.query(Consu).filter(Consu.in_.subq).filter(Consu.measurement_date_time < func.max(Consu.measurement_date_time)).subquery()
+        subq2 = db.session.query(Consu).filter(Consu.measurement_date_time.in_.subq).filter(Consu.measurement_date_time < func.max(Consu.measurement_date_time)).subquery()
         Consu.query.filter(Consu.measurement_date_time.in_(subq2)).delete(synchronize_session=False)

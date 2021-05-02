@@ -11,7 +11,7 @@ class Headr(db.Model):
     fileCreation_date_time = db.Column(db.DateTime)
     file_number = db.Column(db.String(20))
     fileReception_time = db.Column(db.DateTime,  default=datetime.utcnow)
-    __table_args__ = (UniqueConstraint('file_number', name='_file_uc'),)
+    #__table_args__ = (UniqueConstraint('file_number', name='_file_uc'),)
 
 
 class Consu(db.Model):

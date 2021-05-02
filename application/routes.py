@@ -47,7 +47,7 @@ def home():
                     db.session.add(new_consu)
                     db.session.commit()
                     validate_meter_number_and_date_time(meter_number, measurement_date_time)
-                db.session.execute()
+                    db.session.commit()
                 return redirect(url_for('home'))
 
     return render_template('index.html', form=form)
