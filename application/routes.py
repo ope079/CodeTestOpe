@@ -36,8 +36,9 @@ def home():
                 file_number = filename.split(sep, 1)[0]
 
                 for j, i in cons.iterrows():
+                    i = i.tolist()
                     meter_number = i[1]
-                    measurement_date_time = datetime.strptime((str(i[2]).split(sep, 1)[0] + str(i[3]).split(sep, 1)[0]),
+                    measurement_date_time = datetime.strptime(str(i[2]+ i[3]),
                                                               '%Y%m%d%H%M')
                     consumption = i[4]
                     file_number = file_number
