@@ -1,4 +1,3 @@
-from sqlalchemy.orm import session
 from sqlalchemy import and_
 from application.models import Headr, Consu
 from application import db

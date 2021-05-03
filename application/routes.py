@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 import pandas as pd
 from datetime import datetime
 import os
-from application.headr_and_consu_methods import validate_meter_number_and_date_time
+from application.validate_for_duplicates import validate_meter_number_and_date_time
 
 
 @app.route('/', methods=["POST", "GET"])
