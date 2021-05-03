@@ -57,9 +57,9 @@ def home():
                     return correctDate
 
                 for j, i in cons.iterrows():
-                    i = i.tolist()
-                    if "CONSU" == i[0] and isinstance(i[1], int) == True and validate(i[2], i[3])==True and isinstance(i[4], float) == True:
 
+                    if "CONSU" == i[0] and isinstance(int(i[1]), int) == True and validate(i[2], i[3])==True and isinstance(float(i[4]), float) == True:
+                        #i = i.tolist()
                         meter_number = i[1]
                         measurement_date_time = datetime.strptime((str(i[2]).split(sep, 1)[0] + str(i[3]).split(sep, 1)[0]), '%Y%m%d%H%M')
                         consumption = i[4]
@@ -70,7 +70,7 @@ def home():
                         db.session.add(new_consu)
                         validate_meter_number_and_date_time(meter_number, measurement_date_time)
                         db.session.commit()
-                    return redirect(url_for('home'))
+                return redirect(url_for('home'))
 
     return render_template('index.html', form=form)
 
