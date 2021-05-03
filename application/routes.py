@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 import pandas as pd
 from datetime import datetime
 import os
+import re
 from application.validate_for_duplicates import validate_meter_number_and_date_time
 
 
@@ -22,9 +23,18 @@ def home():
             form.file.data.save(path)
             df = pd.read_csv(f'SMRT/{filename}', header=None, dtype=str)
             head = df.iloc[0, :]
-            cons = df.iloc[1:-1, :]
+            cons = df.iloc[1: , :]
 
-            if "HEADR" in head[0] and "TRAIL" in cons.iloc[-1, 0]:
+            def validate1(date_text, time_text):
+                try:
+                    datetime.strptime(date_text, '%Y%m%d')
+                    datetime.strptime(time_text, '%H%M%S')
+                    correctDate = True
+                except ValueError:
+                    correctDate = False
+                return correctDate
+
+            if "HEADR" == head[0] and "TRAIL" == cons.iloc[-1, 0] and "SMRT" == head[1] and type(head[2]) == str and validate1(head[3], head[4]) ==  True and re.match("[A-Z][A-Z][0-9][0-9]+", head[5]):
                 sep = '.'
 
                 head = head.tolist()
@@ -35,19 +45,32 @@ def home():
                 db.session.commit()
                 file_number = filename.split(sep, 1)[0]
 
+                cons = cons.iloc[:-1,:]
+
+                def validate(date_text, time_text):
+                    try:
+                        datetime.strptime(date_text, '%Y%m%d')
+                        datetime.strptime(time_text, '%H%M')
+                        correctDate = True
+                    except ValueError:
+                        correctDate = False
+                    return correctDate
+
                 for j, i in cons.iterrows():
                     i = i.tolist()
-                    meter_number = i[1]
-                    measurement_date_time = datetime.strptime((str(i[2]).split(sep, 1)[0] + str(i[3]).split(sep, 1)[0]), '%Y%m%d%H%M')
-                    consumption = i[4]
-                    file_number = file_number
+                    if "CONSU" == i[0] and isinstance(i[1], int) == True and validate(i[2], i[3])==True and isinstance(i[4], float) == True:
 
-                    new_consu = Consu(meter_number=meter_number, measurement_date_time=measurement_date_time,
-                                      consumption=consumption, file_number=file_number)
-                    db.session.add(new_consu)
-                    validate_meter_number_and_date_time(meter_number, measurement_date_time)
-                    db.session.commit()
-                return redirect(url_for('home'))
+                        meter_number = i[1]
+                        measurement_date_time = datetime.strptime((str(i[2]).split(sep, 1)[0] + str(i[3]).split(sep, 1)[0]), '%Y%m%d%H%M')
+                        consumption = i[4]
+                        file_number = file_number
+
+                        new_consu = Consu(meter_number=meter_number, measurement_date_time=measurement_date_time,
+                                          consumption=consumption, file_number=file_number)
+                        db.session.add(new_consu)
+                        validate_meter_number_and_date_time(meter_number, measurement_date_time)
+                        db.session.commit()
+                    return redirect(url_for('home'))
 
     return render_template('index.html', form=form)
 
