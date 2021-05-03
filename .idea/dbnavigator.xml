@@ -26,13 +26,13 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="74212b2b-f063-4374-a254-817179332b01">
-        <schema name="main" object-types="table, view" />
+        <schema name="main" object-types="view, table" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="74212b2b-f063-4374-a254-817179332b01">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from consu]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from headr;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -82,7 +82,7 @@
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="D:\sqlite\test.db" schema="main" />
+            <file path="$PROJECT_DIR$/application/test1.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

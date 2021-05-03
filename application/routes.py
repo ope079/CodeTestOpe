@@ -22,7 +22,7 @@ def home():
             form.file.data.save(path)
             df = pd.read_csv(f'SMRT/{filename}', header=None, dtype=str)
             head = df.iloc[0, :]
-            cons = df.iloc[1:, :]
+            cons = df.iloc[1:-1, :]
 
             if "HEADR" in head[0] and "TRAIL" in cons.iloc[-1, 0]:
                 sep = '.'
@@ -38,8 +38,7 @@ def home():
                 for j, i in cons.iterrows():
                     i = i.tolist()
                     meter_number = i[1]
-                    measurement_date_time = datetime.strptime(str(i[2]+ i[3]),
-                                                              '%Y%m%d%H%M')
+                    measurement_date_time = datetime.strptime((str(i[2]).split(sep, 1)[0] + str(i[3]).split(sep, 1)[0]), '%Y%m%d%H%M')
                     consumption = i[4]
                     file_number = file_number
 
